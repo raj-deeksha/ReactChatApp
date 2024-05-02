@@ -1,15 +1,34 @@
 import { useState } from "react";
 
 import "./detail.css";
-
+import { auth, db } from "../../lib/firebase";
+import { useChatStore } from "../../lib/chatStore";
+import { useUserStore } from "../../lib/userStore";
+import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 
 function Detail() {
-  
+  const { chatId, user, isCurrentUserBlocked, isRecieverBlocked, changeBlock } =
+    useChatStore();
+  const { currentUser } = useUserStore();
+  const handleBlock = async () => {
+    if (!user) return;
+
+    const userDocRef = doc(db, "users", currentUser.id);
+
+    try {
+      await updateDoc(userDocRef, {
+        blocked: isRecieverBlocked ? arrayRemove(user.id) : arrayUnion(user.id),
+      });
+    await  changeBlock();
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
-    <div className="detail">
+    <div className="detail" style={{ overflowX: "auto" }}>
       <div className="user">
-        <img src="./avatar.png" alt="" />
-        <h2>Jane Doe</h2>
+        <img src={user?.avatar || "./avatar.png"} alt="" />
+        <h2>{user?.username}</h2>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
       </div>
       <div className="info">
@@ -22,7 +41,7 @@ function Detail() {
 
         <div className="option">
           <div className="title">
-            <span>Privacy % help</span>
+            <span>Privacy & help</span>
             <img src="./arrowUp.png" alt="" />
           </div>
         </div>
@@ -82,7 +101,13 @@ function Detail() {
             <img src="./arrowUp.png" alt="" />
           </div>
         </div>
-        <button>Block User</button>
+        <button onClick={handleBlock}>
+          {isCurrentUserBlocked
+            ? "You are Blocked!"
+            : isRecieverBlocked
+            ? "User blocked"
+            : "Block User"}
+        </button>
         <button className="logout" onClick={() => auth.signOut()}>
           Logout
         </button>
@@ -91,3 +116,5 @@ function Detail() {
   );
 }
 export default Detail;
+
+

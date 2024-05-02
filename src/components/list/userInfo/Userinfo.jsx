@@ -14,7 +14,7 @@ function Userinfo() {
                 <img src="/video.png" alt="" />
                 <img src="./edit.png" alt="" />
             </div>
-        </div>
+        </div>  
     )
 }
 export default Userinfo;

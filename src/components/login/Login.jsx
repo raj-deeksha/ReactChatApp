@@ -7,6 +7,7 @@ import { doc, setDoc } from "firebase/firestore";
 import upload from "../../lib/upload";
 
 function Login() {
+  //TO UPLOAD THE IMG ON REGISTER PAGE
   const [avatar, setAvatar] = useState({
     file: null,
     url: '',
@@ -18,44 +19,43 @@ function Login() {
         if (e.target.files[0]) {//this line is for if there is an image
             setAvatar({
             file: e.target.files[0],
-            url:URL.createObjectURL(e.target.files[0]),
+              url: URL.createObjectURL(e.target.files[0]),
+            
             })
                 
-        }
+      }
+      
   }
   const handleRegister = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); //prevent the default behavior and handle the event in a custom way using your own logic.
     setLoading(true);
     const formData = new FormData(e.target);
     const { username, email, password } = Object.fromEntries(formData);
-    console.log(password);
-    console.log(formData);
-    try { 
-      
+    // console.log(password);
+    // console.log(formData);
+    try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
       const imgUrl = await upload(avatar.file);
 
       await setDoc(doc(db, "users", res.user.uid), {
         username,
         email,
-        avatar:imgUrl,
+        avatar: imgUrl,
         id: res.user.uid,
-        blocked:[],
+        blocked: [],
       });
 
       await setDoc(doc(db, "userchats", res.user.uid), {
         chats: [],
       });
 
-      toast.success("Account created! You can login now!")
-    }
-    catch(err) {
+      toast.success("Account created! You can login now!");
+    } catch (err) {
       console.log(err);
-      toast.error(err.message);//sends the notification
+      toast.error(err.message); //sends the notification
     } finally {
       setLoading(false);
     }
-    
   };
   const handleLogin = async (e) => {
     e.preventDefault();

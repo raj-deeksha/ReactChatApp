@@ -94,7 +94,7 @@
 
                 p{
                     padding:20px;
-                    background-color:rgb(17,25,40,0.5);
+                    background-color:rgba(17,25,40,0.3);
                     border-radius: 10px;
                 }
                 span{
@@ -133,12 +133,17 @@
         flex:1;
         border:none;
         outline:none;
-        background-color: rgb(17,25,40,0.5);
+        background-color: rgba(17,25,40,0.5);
         cursor: pointer;
         color:white;
         padding:20px;
         border-radius: 10px;
         font-size:16px;
+
+        &:disabled{
+            
+            cursor:not-allowed;
+        }
     }
     .emoji{
         position:relative;
@@ -146,6 +151,8 @@
             position:absolute;
             bottom:50px;
             left:0;
+            
+
         }
     }
     
@@ -157,5 +164,13 @@
         background-color:#5183fe;
         border-radius:5px;
 
+        &:disabled{
+            background-color: #5183fe;
+            cursor:not-allowed;
+        }
+
     }
+}
+.center::-webkit-scrollbar {
+  display: none;
 }

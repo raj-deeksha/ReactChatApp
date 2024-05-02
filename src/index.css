@@ -7,14 +7,16 @@
 body {
   background-image: url("/bg.jpg");
   display:flex;
+  /* centere item vertically */
   align-items:center;
+  /* center item horizontally */
   justify-content:center;
   height: 100vh;
   color:white;
 }
 .container{
-  width:80vw;
-  /* height:90vh; */
+  width:90vw;
+  height:90vh;
   background-color:rebeccapurple;
   background-color:rgba(17,25,40,0.75);
   backdrop-filter:blur(19px) saturate(180%);
